@@ -1,11 +1,16 @@
 ﻿using GuessMyNumber.Models;
+using System.Security.Claims;
 
 namespace GuessMyNumber.Services
 {
     public interface IGameService
     {
-        string GenerateToken(string gameId);
+        ClaimsPrincipal? GenerateToken(string gameId);
 
         Game CreateNewGame();
+
+        GuessResult Guess(int guess, string gameId);
+
+        public IEnumerable<IGame> GetBestGames(int number);
     }
 }

@@ -20,13 +20,14 @@ namespace GuessMyNumber.Models
 
         public string GetId => Id.ToString();
 
+        public bool IsPlaying => StartDateTime > EndDateTime;
+
         public static Game CreateGame(int numberToGuess)
         {
             return new Game()
             {
                 Id = Guid.NewGuid(),
                 StartDateTime = DateTime.Now,
-                EndDateTime = DateTime.Now,
                 NumberToGuess = numberToGuess,
                 TryCount = 0
             };

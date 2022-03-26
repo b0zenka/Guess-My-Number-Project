@@ -19,5 +19,18 @@ namespace GuessMyNumber.Services
         {
             games.Add(game);
         }
+
+        public Game? GetGameById(string gameId)
+        {
+            return games.FirstOrDefault(x => x.Id.ToString() == gameId);
+        }
+
+        public IEnumerable<IGame> GetGames(int number)
+        {
+            return games.Where(x => !x.IsPlaying)
+                .OrderBy(x => x.TryCount)
+                .ThenBy(x => x.PlayTime)
+                .Take(number);
+        }
     }
 }

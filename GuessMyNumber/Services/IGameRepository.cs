@@ -5,5 +5,9 @@ namespace GuessMyNumber.Services
     public interface IGameRepository
     {
         void Add(Game game);
+
+        public Game? GetGameById(string gameId);
+
+        public IEnumerable<IGame> GetGames(int number);
     }
 }

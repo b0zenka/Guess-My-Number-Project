@@ -7,5 +7,6 @@ namespace GuessMyNumber.Models
         string GetId { get; }
         TimeSpan PlayTime { get; }
         int TryCount { get; set; }
+        bool IsPlaying { get; }
     }
 }

@@ -1,0 +1,45 @@
+﻿@model IEnumerable<GuessMyNumber.Models.IGame>
+
+@{
+    ViewData["Title"] = "HighScores";
+}
+
+<h1>HighScores</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.GetId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NumberToGuess)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PlayTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TryCount)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.GetId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NumberToGuess)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PlayTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TryCount)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

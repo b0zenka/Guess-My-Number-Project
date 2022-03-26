@@ -1,8 +1,6 @@
-﻿using GuessMyNumber.Models;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
+﻿using GuessMyNumber.Enums;
+using GuessMyNumber.Models;
 using System.Security.Claims;
-using System.Text;
 
 namespace GuessMyNumber.Services
 {
@@ -11,13 +9,11 @@ namespace GuessMyNumber.Services
         private const int MIN_VALUE = 1;
         private const int MAX_VALUE = 100;
 
-        private readonly AuthenticationSettings authenticationSettings;
         private readonly IGameRepository gameRepository;
         private readonly Random random;
 
-        public GameService(AuthenticationSettings authenticationSettings, IGameRepository gameRepository)
+        public GameService(IGameRepository gameRepository)
         {
-            this.authenticationSettings = authenticationSettings;
             this.gameRepository = gameRepository;
             this.random = new Random();
         }
@@ -32,26 +28,55 @@ namespace GuessMyNumber.Services
             return game;
         }
 
-        public string GenerateToken(string gameId)
+        ClaimsPrincipal? IGameService.GenerateToken(string gameId)
         {
             var claims = new List<Claim>()
             {
                 new Claim(ClaimTypes.NameIdentifier, gameId)
             };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authenticationSettings.JwtKey));
-            var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-            var expires = DateTime.Now.AddDays(authenticationSettings.JwtExpireDays);
+            var gameIdentity = new ClaimsIdentity(claims, "Game Identity");
+            var principal = new ClaimsPrincipal(new[] { gameIdentity });
 
-            var token = new JwtSecurityToken(authenticationSettings.JwtIssuer,
-                authenticationSettings.JwtIssuer,
-                claims,
-                expires: expires,
-                signingCredentials: cred);
-
-            var tokenHandler = new JwtSecurityTokenHandler();
-
-            return tokenHandler.WriteToken(token);  
+            return principal;
         }
+
+        public GuessResult Guess(int guess, string gameId)
+        {
+            Game? game = gameRepository.GetGameById(gameId);
+
+            if (game is null)
+                throw new NullReferenceException("Game not found");
+
+            GameResult gameResult = GetGameResult(game.NumberToGuess, guess);
+
+            if (gameResult == GameResult.Winner)
+                game.EndDateTime = DateTime.Now;
+            game.TryCount++;
+
+            GuessResult guessResult = new GuessResult()
+            {
+                GameResult = gameResult,
+                TryCount = game.TryCount
+            };
+
+            return guessResult;
+        }
+
+        public IEnumerable<IGame> GetBestGames(int number)
+        {
+            return gameRepository.GetGames(number);
+        }
+
+        private GameResult GetGameResult(int numberToGuess, int guess)
+        {
+            if (guess > numberToGuess)
+                return GameResult.TooBig;
+            else if (guess < numberToGuess)
+                return GameResult.TooLow;
+            else
+                return GameResult.Winner;
+        }
+
     }
 }
