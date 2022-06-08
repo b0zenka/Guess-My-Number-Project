@@ -20,7 +20,7 @@ namespace GuessMyNumber.Models
 
         public string GetId => Id.ToString();
 
-        public bool IsPlaying => StartDateTime > EndDateTime;
+        public bool IsPlaying => StartDateTime >= EndDateTime;
 
         public static Game CreateGame(int numberToGuess)
         {

@@ -25,12 +25,12 @@ namespace GuessMyNumber.Services
             return games.FirstOrDefault(x => x.Id.ToString() == gameId);
         }
 
-        public IEnumerable<IGame> GetGames(int number)
+        public IEnumerable<IGame> GetBestGames(int gamesCount)
         {
             return games.Where(x => !x.IsPlaying)
                 .OrderBy(x => x.TryCount)
                 .ThenBy(x => x.PlayTime)
-                .Take(number);
+                .Take(gamesCount);
         }
     }
 }

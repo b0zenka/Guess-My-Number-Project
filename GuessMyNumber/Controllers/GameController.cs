@@ -42,6 +42,7 @@ namespace GuessMyNumber.Controllers
             string gameId = HttpContext.User
                 .FindFirst(c => c.Type == ClaimTypes.NameIdentifier)?
                 .Value;
+
             var result = service.Guess(guess.Number, gameId);
 
             ViewBag.GuessResult = result;

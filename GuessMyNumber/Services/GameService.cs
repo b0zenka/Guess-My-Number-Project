@@ -28,7 +28,7 @@ namespace GuessMyNumber.Services
             return game;
         }
 
-        ClaimsPrincipal? IGameService.GenerateToken(string gameId)
+        public ClaimsPrincipal? GenerateToken(string gameId)
         {
             var claims = new List<Claim>()
             {
@@ -64,7 +64,7 @@ namespace GuessMyNumber.Services
 
         public IEnumerable<IGame> GetBestGames(int number)
         {
-            return gameRepository.GetGames(number);
+            return gameRepository.GetBestGames(number);
         }
 
         private GameResult GetGameResult(int numberToGuess, int guess)

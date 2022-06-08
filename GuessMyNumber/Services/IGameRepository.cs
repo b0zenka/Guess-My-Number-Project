@@ -8,6 +8,6 @@ namespace GuessMyNumber.Services
 
         public Game? GetGameById(string gameId);
 
-        public IEnumerable<IGame> GetGames(int number);
+        public IEnumerable<IGame> GetBestGames(int number);
     }
 }
