@@ -51,13 +51,12 @@ namespace GuessMyNumber.Services
             GameResult gameResult = GetGameResult(game.NumberToGuess, guess);
 
             if (gameResult == GameResult.Winner)
-                game.EndDateTime = DateTime.Now;
-            game.TryCount++;
+                SetEndTime(game);
 
             GuessResult guessResult = new GuessResult()
             {
                 GameResult = gameResult,
-                TryCount = game.TryCount
+                TryCount = ++game.TryCount
             };
 
             return guessResult;
@@ -78,5 +77,9 @@ namespace GuessMyNumber.Services
                 return GameResult.Winner;
         }
 
+        private void SetEndTime(Game game)
+        {
+            game.EndDateTime = DateTime.Now;
+        }
     }
 }
