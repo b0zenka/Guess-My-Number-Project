@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using Xunit;
+using Moq;
 
 namespace GuessMyNumber.Test
 {
@@ -253,6 +254,24 @@ namespace GuessMyNumber.Test
             // assert
             Assert.Equal(expected.Count(), actual.Count());
             Assert.Equal(expected, actual);
+        }
+
+        [Theory]
+        [InlineData(10)]
+        public void GetBestGames_ForValidInputs_ReturnBestGames(int count)
+        {
+            // arrange
+            var gameRepositoryMock = new Mock<IGameRepository>();
+
+            gameRepositoryMock.Setup(x => x.GetBestGames(It.IsAny<int>())).Returns(MockedGames);
+
+            var gameService = new GameService(gameRepositoryMock.Object);
+
+            // act
+            var bestGames = gameService.GetBestGames(count);
+
+            //assert
+            Assert.Equal(bestGames, MockedGames);
         }
     }
 }

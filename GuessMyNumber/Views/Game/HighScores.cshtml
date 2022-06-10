@@ -1,12 +1,12 @@
 ﻿@model IEnumerable<GuessMyNumber.Models.IGame>
 
 @{
-    ViewData["Title"] = "HighScores";
+    ViewData["Title"] = "Ranking";
 }
 
-<h1>HighScores</h1>
+<h1>@ViewData["Title"]</h1>
 
-<table class="table">
+<table class="table table-bordered table-striped text-center">
     <thead>
         <tr>
             <th>
@@ -21,7 +21,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.TryCount)
             </th>
-            <th></th>
         </tr>
     </thead>
     <tbody>

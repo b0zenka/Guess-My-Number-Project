@@ -3,34 +3,44 @@
 
 @{
     ViewData["Title"] = "Zgadnij";
-}
 
-<h1>@ViewData["Title"]</h1>
-<h3>Try count: @ViewBag.GuessResult.TryCount</h3>
+    string gameResultText = "podaj liczbę od 1 do 100.";
 
-@{
-    GameResult gameResult = ViewBag.GuessResult.GameResult;
-
-    if(gameResult != GameResult.None)
+    switch (ViewBag.GuessResult.GameResult)
     {
-        <h3>Guess result: @gameResult</h3>
+        case GameResult.TooLow:
+            gameResultText = "podana liczba jest za mała";
+            break;
+        case GameResult.TooBig:
+            gameResultText = "podana liczba jest za duża";
+            break;
+        case GameResult.Winner:
+            gameResultText = "Wygrana !! :)";
+            break;
     }
 }
 
+<h1>@ViewData["Title"]</h1>
+<h3>Liczba prób: @ViewBag.GuessResult.TryCount</h3>
+
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-3">
         <form asp-action="Guess">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Number" class="control-label"></label>
-                <input asp-for="Number" class="form-control" min="1" max="100" required/>
-                <span asp-validation-for="Number" class="text-danger"></span>
+                <label asp-for="Number" class="control-label">Liczba:</label>
+                <input asp-for="Number" class="form-control" min="1" max="100" required />
+                <div class="form-group">
+                    <p class="mt-2 bg-light text-info">Postęp: @gameResultText</p>
+                </div>
             </div>
             <div class="form-group">
-                <input type="submit" class="btn btn-primary mt-2" value="Zgadnij"/>
+                <input type="submit" class="btn btn-primary mt-2" value="Zgadnij" />
             </div>
         </form>
     </div>
 </div>
+
+
 
