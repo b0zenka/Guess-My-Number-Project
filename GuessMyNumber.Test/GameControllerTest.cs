@@ -9,12 +9,8 @@ using GuessMyNumber.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using GuessMyNumber.Models;
 using System.Security.Claims;
-using HttpContextMoq;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.VisualStudio.TestPlatform.TestHost;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace GuessMyNumber.Test
 {
@@ -82,6 +78,26 @@ namespace GuessMyNumber.Test
         }
 
         [Fact]
+        public void Guess_ForCorrectInput_ReturnsGuessResult()
+        {
+            // arrange
+            Guess guess = new Guess() { Number = 10 };
+            var serviceMock = new Mock<IGameService>();
+            var guessResult = new GuessResult();
+            serviceMock.Setup(x => x.Guess(It.IsAny<int>(), It.IsAny<string>())).Returns(guessResult);
+
+            var gameController = new GameController(serviceMock.Object);
+            gameController.ControllerContext.HttpContext = new DefaultHttpContext() { User = getMockUser()};
+
+            // act
+            var result = gameController.Guess(guess);
+
+            // assert
+            var viewResult = Assert.IsType<ViewResult>(result);
+            Assert.Equal(viewResult.ViewData["GuessResult"], guessResult);
+        }
+
+        [Fact]
         public void HighScores_ThereIsNoGame_RetrnsEmptyList()
         {
             // arrange
@@ -116,6 +132,16 @@ namespace GuessMyNumber.Test
             var viewResult = Assert.IsType<ViewResult>(result);
             var model = Assert.IsAssignableFrom<IEnumerable<IGame>>(viewResult.ViewData.Model);
             Assert.Equal(MockedGames.Count(), model.Count());
+        }
+
+        private ClaimsPrincipal getMockUser()
+        {
+            var claims = new List<Claim>()
+            {
+                new Claim(ClaimTypes.NameIdentifier, "id")
+            };
+
+            return new ClaimsPrincipal(new[] { new ClaimsIdentity(claims, "Game Identity") });
         }
     }
 }
