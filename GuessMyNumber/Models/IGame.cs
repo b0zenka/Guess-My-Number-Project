@@ -3,6 +3,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace GuessMyNumber.Models
 {
+    /// <summary>
+    /// Game interface
+    /// </summary>
     public interface IGame
     {
         [Display(Name = "Zgadywana liczba")]

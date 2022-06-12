@@ -2,6 +2,9 @@
 
 namespace GuessMyNumber.Models
 {
+    /// <summary>
+    /// Guess class
+    /// </summary>
     public class Guess
     {
         [Required]

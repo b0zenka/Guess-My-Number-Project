@@ -2,6 +2,9 @@
 
 namespace GuessMyNumber.Models
 {
+    /// <summary>
+    /// Game class
+    /// </summary>
     public class Game : IGame
     {
         [Key]
@@ -22,6 +25,11 @@ namespace GuessMyNumber.Models
 
         public bool IsPlaying => StartDateTime >= EndDateTime;
 
+        /// <summary>
+        /// Gets new instance of game class
+        /// </summary>
+        /// <param name="numberToGuess">Number to guess</param>
+        /// <returns>Game</returns>
         public static Game CreateGame(int numberToGuess)
         {
             return new Game()

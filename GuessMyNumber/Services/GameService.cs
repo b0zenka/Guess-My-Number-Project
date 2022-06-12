@@ -4,6 +4,9 @@ using System.Security.Claims;
 
 namespace GuessMyNumber.Services
 {
+    /// <summary>
+    /// Game service class
+    /// </summary>
     public class GameService : IGameService
     {
         private const int MIN_VALUE = 1;
@@ -12,12 +15,20 @@ namespace GuessMyNumber.Services
         private readonly IGameRepository gameRepository;
         private readonly Random random;
 
+        /// <summary>
+        /// Initilialize a new instance of game servise class
+        /// </summary>
+        /// <param name="gameRepository">Game repository</param>
         public GameService(IGameRepository gameRepository)
         {
             this.gameRepository = gameRepository;
             this.random = new Random();
         }
 
+        /// <summary>
+        /// Gets created new game
+        /// </summary>
+        /// <returns>New game</returns>
         public Game CreateNewGame()
         {
             int numberToGuess = random.Next(MIN_VALUE, MAX_VALUE + 1);
@@ -28,6 +39,11 @@ namespace GuessMyNumber.Services
             return game;
         }
 
+        /// <summary>
+        /// Gets ClaimsPrincipal class using a specific claims identities
+        /// </summary>
+        /// <param name="gameId">The unique game ID</param>
+        /// <returns>ClaimsPrincipal</returns>
         public ClaimsPrincipal? GenerateToken(string gameId)
         {
             var claims = new List<Claim>()
@@ -41,6 +57,13 @@ namespace GuessMyNumber.Services
             return principal;
         }
 
+        /// <summary>
+        /// Gets guess result with try count and one of game rusult: win, too big, too low
+        /// </summary>
+        /// <param name="guess">Guess number</param>
+        /// <param name="gameId">The unique game ID</param>
+        /// <returns>Guess result</returns>
+        /// <exception cref="NullReferenceException"></exception>
         public GuessResult Guess(int guess, string gameId)
         {
             Game? game = gameRepository.GetGameById(gameId);
@@ -62,11 +85,22 @@ namespace GuessMyNumber.Services
             return guessResult;
         }
 
+        /// <summary>
+        /// Gets best games
+        /// </summary>
+        /// <param name="number">Number of best games to take</param>
+        /// <returns>List of games</returns>
         public IEnumerable<IGame> GetBestGames(int number)
         {
             return gameRepository.GetBestGames(number);
         }
 
+        /// <summary>
+        /// Gets games result: win, too big or too low
+        /// </summary>
+        /// <param name="numberToGuess">Number to guess</param>
+        /// <param name="guess">Guess number</param>
+        /// <returns>Game result</returns>
         private GameResult GetGameResult(int numberToGuess, int guess)
         {
             if (guess > numberToGuess)
@@ -77,6 +111,10 @@ namespace GuessMyNumber.Services
                 return GameResult.Winner;
         }
 
+        /// <summary>
+        /// Sets end time of game
+        /// </summary>
+        /// <param name="game">Game</param>
         private void SetEndTime(Game game)
         {
             game.EndDateTime = DateTime.Now;
