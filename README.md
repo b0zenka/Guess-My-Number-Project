@@ -57,7 +57,7 @@ A RESTful ASP.NET Core Web Api.
 ![Guess number - win](./screenshots/5.jpg)
 
 ##### High scores
-![High scores](./screenshots/5.jpg)
+![High scores](./screenshots/6.jpg)
 
 
 ## Authors
