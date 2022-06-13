@@ -41,11 +41,22 @@ A RESTful ASP.NET Core Web Api.
 
 ## Screenshots
 
+##### Start view
 ![Start view](./screenshots/1.jpg)
+
+##### New game
 ![New game](./screenshots/2.jpg)
+
+##### Guess number too big
 ![Guess number too big](./screenshots/3.jpg)
+
+##### Guess number too low
 ![Guess number too low](./screenshots/4.jpg)
-![Guess number - winner](./screenshots/5.jpg)
+
+##### Guess number - win
+![Guess number - win](./screenshots/5.jpg)
+
+##### High scores
 ![High scores](./screenshots/5.jpg)
 
 
